@@ -60,14 +60,15 @@ public class  ApplicationTest {
         assertTrue(accountList.contains("123"));
     }
 
-//    @Test
-//    public void testGetAccount() throws InvalidAccountException {
-//        Account account = expenseManager.getAccountsDAO().getAccount("123");
-//        assertEquals("123", account.getAccountNo());
-//        assertEquals("Danu", account.getAccountHolderName());
-//        assertEquals("Amana", account.getBankName());
-//        //assertEquals(11000, account.getBalance(),0.0);
-//
-//    }
+    @Test
+    public void testGetAccount() throws InvalidAccountException {
+        expenseManager.addAccount("123","Amana","Danu",1000);
+        Account account = expenseManager.getAccountsDAO().getAccount("123");
+        assertEquals("123", account.getAccountNo());
+        assertEquals("Danu", account.getAccountHolderName());
+        assertEquals("Amana", account.getBankName());
+        //assertEquals(11000, account.getBalance(),0.0);
+
+    }
 
 }
