@@ -16,14 +16,58 @@
 
 package lk.ac.mrt.cse.dbs.simpleexpensemanager;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import android.app.Application;
+import android.content.Context;
 import android.test.ApplicationTestCase;
+
+import androidx.test.core.app.ApplicationProvider;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
+
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.ExpenseManager;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.PersistentExpenseManager;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.exception.ExpenseManagerException;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.exception.InvalidAccountException;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.model.Account;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
-public class ApplicationTest extends ApplicationTestCase<Application> {
-    public ApplicationTest() {
-        super(Application.class);
+public class  ApplicationTest {
+    private static ExpenseManager expenseManager;
+
+    @Before
+    public void setup(){
+        Context context = ApplicationProvider.getApplicationContext();
+        try {
+            expenseManager = new PersistentExpenseManager(context);
+        } catch (ExpenseManagerException e) {
+            e.printStackTrace();
+        }
     }
+
+    @Test
+    public void testAddAccount(){
+        //expense manager
+        expenseManager.addAccount("123","Amana","Danu",1000);
+        List<String> accountList = expenseManager.getAccountNumbersList();
+        assertTrue(accountList.contains("123"));
+    }
+
+    @Test
+    public void testGetAccount() throws InvalidAccountException {
+        Account account = expenseManager.getAccountsDAO().getAccount("123");
+        assertEquals("123", account.getAccountNo());
+        assertEquals("Danu", account.getAccountHolderName());
+        assertEquals("Amana", account.getBankName());
+        //assertEquals(11000, account.getBalance(),0.0);
+
+    }
+
 }
